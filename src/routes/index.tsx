@@ -1,5 +1,5 @@
 import Home from '../pages/home';
-import Coin from '../pages/coin';
+import Orders from '../pages/orders';
 
 export const routes = [
   {
@@ -7,7 +7,7 @@ export const routes = [
     element: <Home />,
   },
   {
-    path: '/coin/:id',
-    element: <Coin />,
+    path: '/orders/:id',
+    element: <Orders />,
   },
 ];

@@ -1,9 +1,20 @@
 import { useEffect, useRef, useState } from 'react';
-import MarketItem from './MarketItem';
+import MarketItem from '../../components/MarketItem';
 import Pagination from '../../components/Pagination';
+import Tabs from '../../components/Tabs';
 
 const MARKETS_PER_PAGE = 12;
 
+const TABS = [
+  {
+    name: 'تومان',
+    type: 'IRT',
+  },
+  {
+    name: 'تتر',
+    type: 'USDT',
+  },
+];
 function HomePage() {
   const [markets, setMarkets] = useState<any[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
@@ -16,7 +27,6 @@ function HomePage() {
   const indexOfLastRecipe = currentPage * MARKETS_PER_PAGE;
   const indexOfFirstRecipe = indexOfLastRecipe - MARKETS_PER_PAGE;
   const currentMarkets = marketList.slice(indexOfFirstRecipe, indexOfLastRecipe);
-  console.log(currentMarkets);
 
   const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
 
@@ -27,7 +37,6 @@ function HomePage() {
       const response = await fetch('https://api.bitpin.ir/v1/mkt/markets/').then((res) => res.json());
       setMarkets(response?.results);
       totalPageCount.current = response?.count;
-      console.log(response);
     } catch (error) {
       console.log('error: ', error);
     }
@@ -39,16 +48,9 @@ function HomePage() {
 
   return (
     <div>
-      <div className="flex gap-2">
-        <button onClick={() => toggleTab('IRT')} className="border-2 rounded-md p-1">
-          تومان
-        </button>
-        <button onClick={() => toggleTab('USDT')} className="border-2 rounded-md p-1">
-          تتر
-        </button>
-      </div>
+      <Tabs tabs={TABS} activeTab={currentTab} toggleTab={toggleTab} />
       <div>
-        <div className="flex gap-20 border-b-2">
+        <div className="flex gap-20 border-b-2 border-b-slate-400">
           <div>نام رمز ارز</div>
           <div>قیمت</div>
           <div>خرید/فروش</div>
@@ -57,9 +59,7 @@ function HomePage() {
           <MarketItem key={market?.id} id={market?.id} title={market?.title_fa} price={market?.price} tradable={market?.tradable} />
         ))}
       </div>
-      <div className="w-auto">
-        <Pagination perPage={MARKETS_PER_PAGE} totalCount={totalPageCount.current} paginate={paginate} currentPage={currentPage} />
-      </div>
+      <div className="w-auto">{!!totalPageCount.current && <Pagination perPage={MARKETS_PER_PAGE} totalCount={totalPageCount.current} paginate={paginate} currentPage={currentPage} />}</div>
     </div>
   );
 }
