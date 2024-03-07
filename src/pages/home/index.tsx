@@ -24,9 +24,9 @@ function HomePage() {
 
   const marketList = markets.filter((market) => market?.currency2?.code === currentTab);
 
-  const indexOfLastRecipe = currentPage * MARKETS_PER_PAGE;
-  const indexOfFirstRecipe = indexOfLastRecipe - MARKETS_PER_PAGE;
-  const currentMarkets = marketList.slice(indexOfFirstRecipe, indexOfLastRecipe);
+  const indexOfLastMarket = currentPage * MARKETS_PER_PAGE;
+  const indexOfFirstMarket = indexOfLastMarket - MARKETS_PER_PAGE;
+  const currentMarkets = marketList.slice(indexOfFirstMarket, indexOfLastMarket);
 
   const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
 
